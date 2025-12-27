@@ -1,1 +1,3 @@
-osan 2 tehtävien 2.12-2.14 react-koodi tähän hakemistoon
+# React + Vite, tehtävät 2.18-2.20
+
+Sovellus hakee ja näyttää maiden tietoja käyttäjän syöttämän hakuehdon perusteella. Tiedot haetaan REST Countries -rajapinnasta ja yksittäisen maan näkymässä näytetään lisäksi pääkaupungin säätiedot OpenWeather API:n avulla.
