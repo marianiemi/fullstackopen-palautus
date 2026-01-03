@@ -1,0 +1,75 @@
+### get all
+GET http://localhost:3001/api/persons
+
+### delete one
+DELETE http://localhost:3001/api/persons/1
+
+### get all again
+GET http://localhost:3001/api/persons
+
+### add new person
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Test Person",
+  "number": "050-1111111"
+}
+
+### get all persons
+GET http://localhost:3001/api/persons
+
+### missing name
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "number": "050-0000000"
+}
+
+### missing number
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "No Number"
+}
+
+### duplicate name Maria
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Arto Hellas",
+  "number": "999"
+}
+
+### valid person
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Valid Person",
+  "number": "050-123123"
+}
+
+### add new person with morgan
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Morgan Testimies",
+  "number": "123456"
+}
+
+### Get all persons
+GET http://localhost:3001/api/persons
+
+### Add new person
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Testi Henkilo",
+  "number": "040-1112223"
+}
