@@ -22,3 +22,9 @@ https://puhelinluettelo-backend-hidden-wildflower-6364.fly.dev
 - Yksittäisen henkilön haku ja info-endpoint tietokantaa käyttäen
 
 ## Full stack tehtävät 3.19-3.22
+
+- Nimen minimipituuden validointi
+- Puhelinnumeron muodon ja pituuden validointi
+- Frontendista uusi production build ja kopiointi backendin dist-kansioon
+- Sovellus julkaistu Fly.io:ssa ja ympäristömuuttujat asetettu (MONGODB_URI)
+- Tyylivirheiden korjaus ESLintillä
