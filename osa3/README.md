@@ -20,3 +20,5 @@ https://puhelinluettelo-backend-hidden-wildflower-6364.fly.dev
 - Virheiden käsittely middlewaressa
 - Olemassa olevan henkilön numeron päivittäminen (PUT)
 - Yksittäisen henkilön haku ja info-endpoint tietokantaa käyttäen
+
+## Full stack tehtävät 3.19-3.22

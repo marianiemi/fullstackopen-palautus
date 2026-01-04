@@ -73,3 +73,33 @@ Content-Type: application/json
   "name": "Testi Henkilo",
   "number": "040-1112223"
 }
+
+### Delete person
+DELETE http://localhost:3001/api/persons/69592ca160770396a50a3055
+
+### Add another person
+PUT http://localhost:3001/api/persons/69592d766f7fa8c1704e7ffe
+Content-Type: application/json
+
+{
+  "name": "Arto Hellas",
+  "number": "040-999999"
+}
+
+### Too short name
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Mi",
+  "number": "060606"
+}
+
+### Too short or wrong format number
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Testi Niemi",
+  "number": "040-1111111"
+}
