@@ -13,4 +13,10 @@ https://puhelinluettelo-backend-hidden-wildflower-6364.fly.dev
 ## Full stack tehtävät 3.13-3.14
 
 - Backend muutettu käyttämään MongoDB-tietokantaa
--
+
+## Full stack tehtävät 3.15-3.18
+
+- Henkikön poistaminen tietokannasta
+- Virheiden käsittely middlewaressa
+- Olemassa olevan henkilön numeron päivittäminen (PUT)
+- Yksittäisen henkilön haku ja info-endpoint tietokantaa käyttäen
