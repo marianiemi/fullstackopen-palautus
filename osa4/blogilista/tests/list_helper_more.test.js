@@ -8,6 +8,8 @@ describe("favoriteBlog", () => {
   test("returns the blog with most likes", () => {
     const result = listHelper.favoriteBlog(blogs);
 
+    console.log("favoriteBlog result:", result);
+
     assert.deepStrictEqual(result, {
       _id: "5a422b3a1b54a676234d17f9",
       title: "Canonical string reduction",
@@ -25,8 +27,10 @@ describe("favoriteBlog", () => {
 });
 
 describe("mostBlogs", () => {
-  test("returns author with most blogs and their blog count", () => {
+  test("returns author with most blogs", () => {
     const result = listHelper.mostBlogs(blogs);
+
+    console.log("mostBlogs result:", result);
 
     assert.deepStrictEqual(result, {
       author: "Robert C. Martin",
@@ -43,6 +47,8 @@ describe("mostBlogs", () => {
 describe("mostLikes", () => {
   test("returns author with most likes and like sum", () => {
     const result = listHelper.mostLikes(blogs);
+
+    console.log("mostLikes result:", result);
 
     assert.deepStrictEqual(result, {
       author: "Edsger W. Dijkstra",
