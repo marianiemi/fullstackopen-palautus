@@ -12,6 +12,7 @@ osa2
   maiden_tiedot
 osa3
   puhelinluettelo backend
+osa4
+  blogilista
 ```
 
-Hakemistoon kannattaa sijoittaa koko tehtäväsarjan react-projekti lukuunottamatta riippuvuuksia sisältävää hakemistoa <i>node\_modules</i>
