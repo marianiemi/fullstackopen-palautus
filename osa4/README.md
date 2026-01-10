@@ -26,3 +26,11 @@
 - Blogien poisto ja päivitys
 - DELETE- ja PUT-endpointit
 - API-testit SuperTestillä
+
+# Tehtävät 4.15-4.23
+
+- POST käyttäjien luominen
+- Validoinnit username ja password
+- Token-perusteinen kirjautuminen
+- Poisto vain blogin luojalle
+- Testit päivitetty
