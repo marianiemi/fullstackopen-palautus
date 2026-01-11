@@ -25,3 +25,6 @@
 - Blogien poistaminen
 - Poiston varmistus
 - Poistonappi näkyy vain blogin lisänneelle käyttäjälle
+
+## 5.12
+- Lisätty ESLint ja korjattu virheet
