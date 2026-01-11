@@ -34,7 +34,7 @@
 
 ## 5.12
 
-- # Lisätty ESLint ja korjattu virheet
+- Lisätty ESLint ja korjattu virheet
 
 ### 5.12
 
