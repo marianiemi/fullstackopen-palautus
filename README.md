@@ -13,6 +13,8 @@ osa2
 osa3
   puhelinluettelo backend
 osa4
-  blogilista
+  blogilista backend
+osa5
+  blogilista frontend
 ```
 
