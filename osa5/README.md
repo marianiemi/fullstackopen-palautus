@@ -47,14 +47,13 @@
 - Vitest + React Testing Library käytössä
 
 - 
-### Tehtävät 5.17–5.20
+### 5.17–5.20
 - End-to-end-testit Playwrightilla
 - Testattu:
   - kirjautuminen onnistuneilla ja virheellisillä tunnuksilla
   - uuden blogin luominen
   - blogin likettäminen
 
----
 
 ## Käynnistys
 
