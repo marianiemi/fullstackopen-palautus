@@ -46,6 +46,38 @@
 - BlogForm-komponentin testi
 - Vitest + React Testing Library käytössä
 
+- 
+### Tehtävät 5.17–5.20
+- End-to-end-testit Playwrightilla
+- Testattu:
+  - kirjautuminen onnistuneilla ja virheellisillä tunnuksilla
+  - uuden blogin luominen
+  - blogin likettäminen
+
+---
+
+## Käynnistys
+
+Asenna riippuvuudet:
+
+```bash
+npm install
+Käynnistä sovellus kehitystilassa:
+
+bash
+Kopioi koodi
+npm run dev
+Aja frontendin yksikkötestit:
+
+bash
+Kopioi koodi
+npm test
+Aja end-to-end-testit:
+
+bash
+Kopioi koodi
+npm run test:e2e
+
 ## Käynnistys
 
 ```bash
