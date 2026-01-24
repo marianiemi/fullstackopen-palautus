@@ -1,157 +1,143 @@
-import { useEffect, useRef, useState } from 'react'
-import Blog from './components/Blog'
-import Notification from './components/Notification'
-import blogService from './services/blogs'
-import loginService from './services/login'
-import Togglable from './components/Togglable'
-import BlogForm from './components/BlogForm'
+import { useEffect, useRef, useState } from "react";
+import Blog from "./components/Blog";
+import Notification from "./components/Notification";
+import blogService from "./services/blogs";
+import loginService from "./services/login";
+import Togglable from "./components/Togglable";
+import BlogForm from "./components/BlogForm";
 
 const App = () => {
-  // blogilista backendistä
-  const [blogs, setBlogs] = useState([])
+  const [blogs, setBlogs] = useState([]);
 
-  // kirjautumislomakkeen kentät
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  // kirjautunut käyttäjä (sisältää tokenin)
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
-  // ref Togglable-komponenttiin (blogilomakkeen piilottamiseen)
-  const blogFormRef = useRef()
+  const blogFormRef = useRef();
 
-  // notifikaatiot (viesti + tyyppi)
-  const [notification, setNotification] = useState(null)
-  const [notificationType, setNotificationType] = useState(null)
+  const [notification, setNotification] = useState(null);
+  const [notificationType, setNotificationType] = useState(null);
 
-  const showNotification = (message, type = 'success') => {
-    setNotification(message)
-    setNotificationType(type)
+  const showNotification = (message, type = "success") => {
+    setNotification(message);
+    setNotificationType(type);
 
     setTimeout(() => {
-      setNotification(null)
-      setNotificationType(null)
-    }, 5000)
-  }
+      setNotification(null);
+      setNotificationType(null);
+    }, 5000);
+  };
 
-  // haetaan blogit backendistä
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
+  const fetchBlogs = async () => {
+    try {
+      const blogsFromServer = await blogService.getAll();
+      setBlogs(blogsFromServer);
+    } catch (e) {
+      showNotification("failed to fetch blogs", "error");
     }
-    fetchBlogs()
-  }, [])
+  };
 
-  // tarkistetaan onko käyttäjä jo kirjautunut (localStorage)
-
+  // Palautetaan kirjautunut käyttäjä localStoragesta ja haetaan blogit tokenin kanssa
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      const savedUser = JSON.parse(loggedUserJSON);
+      setUser(savedUser);
+      blogService.setToken(savedUser.token);
+      fetchBlogs();
     }
-  }, [])
+  }, []);
 
   const handleLogin = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
-      const user = await loginService.login({ username, password })
+      const loggedInUser = await loginService.login({ username, password });
 
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      blogService.setToken(user.token)
+      window.localStorage.setItem(
+        "loggedBlogappUser",
+        JSON.stringify(loggedInUser)
+      );
+      blogService.setToken(loggedInUser.token);
 
-      setUser(user)
-      setUsername('')
-      setPassword('')
+      setUser(loggedInUser);
+      setUsername("");
+      setPassword("");
+
+      await fetchBlogs();
+      showNotification("logged in", "success");
     } catch (error) {
-      showNotification('wrong username/password', 'error')
+      showNotification("wrong username/password", "error");
     }
-  }
+  };
 
-  // Uuden blogin lisäys
+  const handleLogout = () => {
+    window.localStorage.removeItem("loggedBlogappUser");
+    blogService.setToken(null);
+    setUser(null);
+    setBlogs([]);
+  };
 
   const addBlog = async (blogObject) => {
     try {
-      const createdBlog = await blogService.create(blogObject)
+      const createdBlog = await blogService.create(blogObject);
 
-      // piilotetaan lomake onnistuneen lisäyksen jälkeen
       if (blogFormRef.current) {
-        blogFormRef.current.toggleVisibility()
+        blogFormRef.current.toggleVisibility();
       }
 
-      setBlogs((prev) => prev.concat(createdBlog))
+      setBlogs((prev) => prev.concat(createdBlog));
 
       showNotification(
         `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
-        'success'
-      )
+        "success"
+      );
     } catch (error) {
-      showNotification('failed to create blog', 'error')
+      showNotification("failed to create blog", "error");
     }
-  }
-
-  // Blogin tykkäys
+  };
 
   const likeBlog = async (blog) => {
     try {
-      const id = blog.id || blog._id
-      const userId = blog.user?.id || blog.user?._id || blog.user
+      const id = blog.id;
 
+      // FSO backend yleensä odottaa, että user on id (string)
       const updatedBlogData = {
-        user: userId,
-        likes: blog.likes + 1,
-        author: blog.author,
         title: blog.title,
+        author: blog.author,
         url: blog.url,
-      }
+        likes: (Number(blog.likes) || 0) + 1,
+        user: typeof blog.user === "object" ? blog.user.id : blog.user,
+      };
 
-      const updatedBlog = await blogService.update(id, updatedBlogData)
+      const updatedBlog = await blogService.update(id, updatedBlogData);
 
-      // 5.9-korjaus: säilytetään user-objekti UI:ssa
+      // Säilytetään user-objekti UI:ssa, jotta Blog-komponentti voi näyttää nimen
       const updatedForUi = {
         ...updatedBlog,
-        id: updatedBlog.id || updatedBlog._id || id,
-        user:
-          typeof updatedBlog.user === 'string' ? blog.user : updatedBlog.user,
-      }
+        user: typeof blog.user === "object" ? blog.user : updatedBlog.user,
+      };
 
-      setBlogs((prev) =>
-        prev.map((b) => ((b.id || b._id) === id ? updatedForUi : b))
-      )
-
-      showNotification(`${blog.title} liked`, 'success')
+      setBlogs((prev) => prev.map((b) => (b.id === id ? updatedForUi : b)));
+      showNotification(`${blog.title} liked`, "success");
     } catch (error) {
-      showNotification('failed to like blog', 'error')
+      showNotification("failed to like blog", "error");
     }
-  }
-
-  // Blogin poisto
+  };
 
   const deleteBlog = async (blog) => {
-    const id = blog.id || blog._id
-
-    const ok = window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)
-    if (!ok) return
+    const ok = window.confirm(`Remove blog ${blog.title} by ${blog.author}?`);
+    if (!ok) return;
 
     try {
-      await blogService.remove(id)
-      setBlogs((prev) => prev.filter((b) => (b.id || b._id) !== id))
-      showNotification(`deleted ${blog.title}`, 'success')
+      await blogService.remove(blog.id);
+      setBlogs((prev) => prev.filter((b) => b.id !== blog.id));
+      showNotification(`deleted ${blog.title}`, "success");
     } catch (error) {
-      showNotification('failed to delete blog', 'error')
+      showNotification("failed to delete blog", "error");
     }
-  }
-
-  // Käyttäjän uloskirjautuminen
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogappUser')
-    blogService.setToken(null)
-    setUser(null)
-  }
+  };
 
   if (user === null) {
     return (
@@ -184,18 +170,14 @@ const App = () => {
           <button type="submit">login</button>
         </form>
       </div>
-    )
+    );
   }
 
-  // Blogien järjestäminen tykkäysten mukaan
-
   const sortedBlogs = [...blogs].sort((a, b) => {
-    const likesA = Number(a.likes) || 0
-    const likesB = Number(b.likes) || 0
-    return likesB - likesA
-  })
-
-  // kirjautuneena olevan käyttäjän näkymä
+    const likesA = Number(a.likes) || 0;
+    const likesB = Number(b.likes) || 0;
+    return likesB - likesA;
+  });
 
   return (
     <div>
@@ -211,10 +193,9 @@ const App = () => {
         <BlogForm createBlog={addBlog} />
       </Togglable>
 
-      <h3>blogs</h3>
       {sortedBlogs.map((blog) => (
         <Blog
-          key={blog.id || blog._id}
+          key={blog.id}
           blog={blog}
           user={user}
           handleLike={() => likeBlog(blog)}
@@ -222,7 +203,7 @@ const App = () => {
         />
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

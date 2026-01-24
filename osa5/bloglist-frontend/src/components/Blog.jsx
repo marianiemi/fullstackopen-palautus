@@ -3,50 +3,56 @@ import { useState } from "react";
 const Blog = ({ blog, user, handleLike, handleDelete }) => {
   const [visible, setVisible] = useState(false);
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
+  const hideWhenVisible = { display: visible ? "none" : "" };
+  const showWhenVisible = { display: visible ? "" : "none" };
 
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+  const toggleVisibility = () => setVisible(!visible);
 
-  const detailsStyle = { display: visible ? "" : "none" };
+  // Selvitetään "omistaja" robustisti eri muotoja varten
+  const blogUser = blog.user;
 
-  // delete näkyy vain omistajalle (id tai username)
-  const blogUserId = blog.user?.id || blog.user?._id || blog.user;
-  const loggedUserId = user?.id || user?._id;
+  const blogOwnerUsername =
+    typeof blogUser === "object" ? blogUser.username : blogUser;
 
-  const blogUsername = blog.user?.username;
+  const blogOwnerId =
+    typeof blogUser === "object" ? blogUser.id || blogUser._id : null;
+
   const loggedUsername = user?.username;
+  const loggedId = user?.id || user?._id;
 
-  const showDelete =
-    (blogUserId &&
-      loggedUserId &&
-      String(blogUserId) === String(loggedUserId)) ||
-    (blogUsername && loggedUsername && blogUsername === loggedUsername);
+  const canRemove =
+    (blogOwnerUsername &&
+      loggedUsername &&
+      blogOwnerUsername === loggedUsername) ||
+    (blogOwnerId && loggedId && blogOwnerId === loggedId);
 
   return (
-    <div style={blogStyle}>
-      {/* OLETUSNÄKYMÄ: title + author + view/hide */}
-      <div>
+    <div
+      className="blog"
+      style={{ border: "1px solid", padding: 8, marginBottom: 8 }}
+    >
+      <div style={hideWhenVisible}>
         {blog.title} {blog.author}{" "}
-        <button onClick={toggleVisibility}>{visible ? "hide" : "view"}</button>
+        <button onClick={toggleVisibility}>view</button>
       </div>
 
-      {/* YKSITYISKOHDAT: url + likes + user + delete */}
-      <div style={detailsStyle}>
+      <div style={showWhenVisible}>
+        <div>
+          {blog.title} {blog.author}{" "}
+          <button onClick={toggleVisibility}>hide</button>
+        </div>
+
         <div>{blog.url}</div>
+
         <div>
           likes {blog.likes} <button onClick={handleLike}>like</button>
         </div>
-        <div>{blog.user?.name}</div>
 
-        {showDelete && <button onClick={handleDelete}>delete</button>}
+        <div>
+          {typeof blogUser === "object" ? blogUser.name : blogOwnerUsername}
+        </div>
+
+        {canRemove && <button onClick={handleDelete}>delete</button>}
       </div>
     </div>
   );
