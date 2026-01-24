@@ -1,4 +1,4 @@
-# osa 5 Blogilistan frontend
+# osa 5 Blogilista frontendin päivitys ja testit
 
 ## 5.1–5.4
 
@@ -46,7 +46,6 @@
 - BlogForm-komponentin testi
 - Vitest + React Testing Library käytössä
 
-- 
 ### 5.17–5.20
 - End-to-end-testit Playwrightilla
 - Testattu:
