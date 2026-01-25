@@ -33,3 +33,11 @@
 - Backend-kommunikointi siirretty action creatoreihin
 - Äänestyksen ja luonnin tallennus backendiin
 - Keskitetty notifikaatio thunk-actionilla
+
+### 6.20–6.24 Anekdootit ja React Query
+
+- Anekdoottien haku palvelimelta React Queryllä
+- Uusien anekdoottien luonti ja äänestäminen mutaatioilla
+- Automaattinen näkymän päivitys query invalidoinnilla
+- Virhetilanteiden käsittely (backend ei saatavilla, liian lyhyt anekdootti)
+- Notifikaatiot useReducerin ja contextin avulla
