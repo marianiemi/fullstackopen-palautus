@@ -23,8 +23,8 @@ osa4
   └─ blogilista backend
 
 osa5
-├─ blogilista frontend
-└─ blogilista testit
+  ├─ blogilista frontend
+  └─ blogilista testit
 
 osa6
   ├─ Query anekdootit
@@ -32,9 +32,9 @@ osa6
   └─ Redux unicafe
 
 osa7
-├─ anekdootit
-├─ Query blogilista
-└─ Countries
+  ├─ anekdootit
+  ├─ Query blogilista
+  └─ Countries
 
 ```
 
