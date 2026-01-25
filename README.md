@@ -3,18 +3,38 @@
 
 ```
 osa0
+  └─ Perusteet
+
 osa1
-  kurssitiedot
-  unicafe
-  anekdootit
+  ├─ kurssitiedot
+  ├─ unicafe
+  └─ anekdootit
+
 osa2
-  puhelinluettelo
-  maiden_tiedot
+  ├─ kurssitiedot
+  ├─ maiden_tiedot
+  └─ puhelinluettelo
+   
+
 osa3
-  puhelinluettelo backend
+  └─ puhelinluettelo backend
+
 osa4
-  blogilista backend
+  └─ blogilista backend
+
 osa5
-  blogilista frontend
+├─ blogilista frontend
+└─ blogilista testit
+
+osa6
+  ├─ Query anekdootit
+  ├─ Redux anekdootit
+  └─ Redux unicafe
+
+osa7
+├─ anekdootit
+├─ Query blogilista
+└─ Countries
+
 ```
 
