@@ -22,3 +22,9 @@
 - Maan tietojen haku `useEffect`-hookilla nimen muuttuessa
 - Tilan palautus muodossa `{ found, data }`
 - Virhetilanteen käsittely (maa ei löydy)
+
+### 7.9 Prettier
+
+- Prettier käyttöön projektissa
+- ESLint + Prettier integroitu
+- Automaattinen muotoilu tallennettaessa
