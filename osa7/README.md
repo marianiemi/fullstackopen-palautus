@@ -8,3 +8,10 @@
 - Uuden anekdootin luonti omalla reitillä
 - Luonnin jälkeen automaattinen uudelleenohjaus
 - Notifikaatio onnistuneesta lisäyksestä
+
+### 7.4–7.6 Anekdootit ja custom hookit
+
+- Lomakkeen kenttien käsittely custom hookilla
+- Kenttien tyhjennys reset-toiminnolla
+- Spread-syntaksin käyttö inputeissa
+- Warningin poisto erottamalla input-propsit ja reset-funktio

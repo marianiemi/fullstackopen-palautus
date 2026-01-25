@@ -7,7 +7,7 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
-
+import { useField } from "./hooks";
 import Menu from "./Menu";
 
 const Notification = ({ notification }) => {
@@ -95,25 +95,28 @@ const Footer = () => (
 const CreateNew = (props) => {
   const navigate = useNavigate();
 
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  const content = useField("text");
+  const author = useField("text");
+  const info = useField("text");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.input.value,
+      author: author.input.value,
+      info: info.input.value,
       votes: 0,
     });
 
-    setContent("");
-    setAuthor("");
-    setInfo("");
-
     navigate("/");
+  };
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    content.reset();
+    author.reset();
+    info.reset();
   };
 
   return (
@@ -121,30 +124,16 @@ const CreateNew = (props) => {
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content{" "}
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          content <input {...content.input} />
         </div>
         <div>
-          author{" "}
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          author <input {...author.input} />
         </div>
         <div>
-          url for more info{" "}
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          url for more info <input {...info.input} />
         </div>
         <button type="submit">create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   );
