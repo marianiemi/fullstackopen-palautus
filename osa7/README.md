@@ -34,3 +34,28 @@
 - Notifikaatiot context + reducer
 - Blogit React Querylla
 - Like & delete React Query
+
+### 7.20-7.21 Ulkoasu
+React-Bootstrap käytössä
+Tumma teema ja notifikaatiot
+Blogit kortteina
+
+
+## Käynnistys
+
+### Backend
+```bash
+cd BloglistReactQuery/bloglist-backend
+npm install
+npm run dev
+
+### Frontend
+cd BloglistReactQuery/bloglist-frontend
+npm install
+npm run dev
+
+Sovellus aukeaa selaimessa osoitteessa http://localhost:5173
+Backend käyttää oletuksena porttia 3003.
+
+
+
