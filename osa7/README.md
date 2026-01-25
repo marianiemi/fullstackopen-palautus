@@ -15,3 +15,10 @@
 - Kenttien tyhjennys reset-toiminnolla
 - Spread-syntaksin käyttö inputeissa
 - Warningin poisto erottamalla input-propsit ja reset-funktio
+
+### 7.7. Countries
+
+- Custom hook `useCountry` REST Countries -rajapinnan käyttöön
+- Maan tietojen haku `useEffect`-hookilla nimen muuttuessa
+- Tilan palautus muodossa `{ found, data }`
+- Virhetilanteen käsittely (maa ei löydy)
