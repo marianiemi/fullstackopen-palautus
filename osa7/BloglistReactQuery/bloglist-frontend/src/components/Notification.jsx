@@ -1,17 +1,24 @@
+import { Alert } from 'react-bootstrap'
 import { useNotification } from '../contexts/NotificationContext'
 
 const Notification = () => {
   const [state] = useNotification()
-  if (!state?.message) return null
 
-  const style = {
-    border: 'solid 1px',
-    padding: 10,
-    marginBottom: 10,
-    color: state.type === 'error' ? 'red' : 'green',
-  }
+  if (!state || !state.message) return null
 
-  return <div style={style}>{state.message}</div>
+  const isError = state.type === 'error'
+
+  return (
+    <Alert
+      className="mb-3 text-white fw-semibold"
+      style={{
+        backgroundColor: isError ? '#842029' : '#0f5132',
+        border: 'none',
+      }}
+    >
+      {state.message}
+    </Alert>
+  )
 }
 
 export default Notification

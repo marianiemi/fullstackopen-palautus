@@ -1,16 +1,6 @@
-import { useState } from 'react'
+import { Card, Button } from 'react-bootstrap'
 
 const Blog = ({ blog, user, handleLike, handleDelete }) => {
-  const [visible, setVisible] = useState(false)
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
-
   const canRemove =
     user &&
     blog.user &&
@@ -19,33 +9,48 @@ const Blog = ({ blog, user, handleLike, handleDelete }) => {
       : blog.user === user.id)
 
   return (
-    <div style={blogStyle}>
-      <div>
-        {blog.title} {blog.author}{' '}
-        <button onClick={() => setVisible(!visible)}>
-          {visible ? 'hide' : 'view'}
-        </button>
-      </div>
+    <Card bg="dark" text="light" className="mb-3 shadow-sm">
+      <Card.Body>
+        <Card.Title>{blog.title}</Card.Title>
 
-      {visible && (
-        <div>
-          <div>{blog.url}</div>
-          <div>
-            likes {blog.likes}{' '}
-            <button onClick={handleLike} type="button">
-              like
-            </button>
-          </div>
-          <div>{typeof blog.user === 'object' ? blog.user.name : ''}</div>
+        <Card.Subtitle className="mb-2 text-secondary">
+          {blog.author}
+        </Card.Subtitle>
 
-          {canRemove && (
-            <button onClick={handleDelete} type="button">
-              remove
-            </button>
-          )}
-        </div>
-      )}
-    </div>
+        <Card.Text>
+          <a
+            href={blog.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-info"
+          >
+            {blog.url}
+          </a>
+        </Card.Text>
+
+        <Card.Text>
+          ❤️ {blog.likes}{' '}
+          <Button
+            variant="outline-success"
+            size="sm"
+            className="ms-2"
+            onClick={handleLike}
+          >
+            like
+          </Button>
+        </Card.Text>
+
+        <Card.Text className="text-secondary">
+          {typeof blog.user === 'object' ? blog.user.name : ''}
+        </Card.Text>
+
+        {canRemove && (
+          <Button variant="outline-danger" size="sm" onClick={handleDelete}>
+            remove
+          </Button>
+        )}
+      </Card.Body>
+    </Card>
   )
 }
 

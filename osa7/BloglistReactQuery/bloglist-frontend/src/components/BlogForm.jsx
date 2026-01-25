@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Form, Button, Card } from 'react-bootstrap'
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
@@ -20,46 +21,50 @@ const BlogForm = ({ createBlog }) => {
   }
 
   return (
-    <div>
-      <h3>create new</h3>
+    <Card bg="dark" text="light" className="mb-4 shadow-sm">
+      <Card.Body>
+        <Card.Title>Create new blog</Card.Title>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            title
-            <input
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
               type="text"
               value={title}
               onChange={({ target }) => setTitle(target.value)}
+              placeholder="Blog title"
+              required
             />
-          </label>
-        </div>
+          </Form.Group>
 
-        <div>
-          <label>
-            author
-            <input
+          <Form.Group className="mb-3">
+            <Form.Label>Author</Form.Label>
+            <Form.Control
               type="text"
               value={author}
               onChange={({ target }) => setAuthor(target.value)}
+              placeholder="Author name"
+              required
             />
-          </label>
-        </div>
+          </Form.Group>
 
-        <div>
-          <label>
-            url
-            <input
+          <Form.Group className="mb-3">
+            <Form.Label>URL</Form.Label>
+            <Form.Control
               type="text"
               value={url}
               onChange={({ target }) => setUrl(target.value)}
+              placeholder="https://example.com"
+              required
             />
-          </label>
-        </div>
+          </Form.Group>
 
-        <button type="submit">create</button>
-      </form>
-    </div>
+          <Button variant="success" type="submit">
+            create
+          </Button>
+        </Form>
+      </Card.Body>
+    </Card>
   )
 }
 

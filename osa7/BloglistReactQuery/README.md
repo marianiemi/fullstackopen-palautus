@@ -10,3 +10,9 @@
 - Notifikaatiot context + reducer
 - Blogit React Querylla
 - Like & delete React Query
+
+### 7.21 Ulkoasu
+
+- React-Bootstrap käytössä
+- Tumma teema ja notifikaatiot
+- Blogit kortteina
