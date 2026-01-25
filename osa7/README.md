@@ -28,3 +28,9 @@
 - Prettier käyttöön projektissa
 - ESLint + Prettier integroitu
 - Automaattinen muotoilu tallennettaessa
+
+### 7.10-7.12 React Query
+
+- Notifikaatiot context + reducer
+- Blogit React Querylla
+- Like & delete React Query
