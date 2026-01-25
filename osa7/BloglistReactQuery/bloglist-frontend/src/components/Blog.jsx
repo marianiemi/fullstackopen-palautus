@@ -3,57 +3,48 @@ import { useState } from 'react'
 const Blog = ({ blog, user, handleLike, handleDelete }) => {
   const [visible, setVisible] = useState(false)
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
-
-  const toggleVisibility = () => setVisible(!visible)
-
-  // Selvitetään "omistaja" robustisti eri muotoja varten
-  const blogUser = blog.user
-
-  const blogOwnerUsername =
-    typeof blogUser === 'object' ? blogUser.username : blogUser
-
-  const blogOwnerId =
-    typeof blogUser === 'object' ? blogUser.id || blogUser._id : null
-
-  const loggedUsername = user?.username
-  const loggedId = user?.id || user?._id
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5,
+  }
 
   const canRemove =
-    (blogOwnerUsername &&
-      loggedUsername &&
-      blogOwnerUsername === loggedUsername) ||
-    (blogOwnerId && loggedId && blogOwnerId === loggedId)
+    user &&
+    blog.user &&
+    (typeof blog.user === 'object'
+      ? blog.user.username === user.username
+      : blog.user === user.id)
 
   return (
-    <div
-      className="blog"
-      style={{ border: '1px solid', padding: 8, marginBottom: 8 }}
-    >
-      <div style={hideWhenVisible}>
+    <div style={blogStyle}>
+      <div>
         {blog.title} {blog.author}{' '}
-        <button onClick={toggleVisibility}>view</button>
+        <button onClick={() => setVisible(!visible)}>
+          {visible ? 'hide' : 'view'}
+        </button>
       </div>
 
-      <div style={showWhenVisible}>
+      {visible && (
         <div>
-          {blog.title} {blog.author}{' '}
-          <button onClick={toggleVisibility}>hide</button>
+          <div>{blog.url}</div>
+          <div>
+            likes {blog.likes}{' '}
+            <button onClick={handleLike} type="button">
+              like
+            </button>
+          </div>
+          <div>{typeof blog.user === 'object' ? blog.user.name : ''}</div>
+
+          {canRemove && (
+            <button onClick={handleDelete} type="button">
+              remove
+            </button>
+          )}
         </div>
-
-        <div>{blog.url}</div>
-
-        <div>
-          likes {blog.likes} <button onClick={handleLike}>like</button>
-        </div>
-
-        <div>
-          {typeof blogUser === 'object' ? blogUser.name : blogOwnerUsername}
-        </div>
-
-        {canRemove && <button onClick={handleDelete}>delete</button>}
-      </div>
+      )}
     </div>
   )
 }

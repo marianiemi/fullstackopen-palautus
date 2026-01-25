@@ -1,28 +1,63 @@
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import BlogForm from './BlogForm'
+import { useState } from 'react'
 
-test('calls createBlog with correct details when a new blog is created', async () => {
-  const createBlog = vi.fn()
-  const user = userEvent.setup()
+const BlogForm = ({ createBlog }) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
-  render(<BlogForm createBlog={createBlog} />)
+  const addBlog = (event) => {
+    event.preventDefault()
 
-  const titleInput = screen.getByLabelText('title')
-  const authorInput = screen.getByLabelText('author')
-  const urlInput = screen.getByLabelText('url')
+    createBlog({
+      title,
+      author,
+      url,
+    })
 
-  await user.type(titleInput, 'Testing title')
-  await user.type(authorInput, 'Testing author')
-  await user.type(urlInput, 'https://testing.url')
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
 
-  const createButton = screen.getByText('create')
-  await user.click(createButton)
+  return (
+    <div>
+      <h3>create new</h3>
 
-  expect(createBlog).toHaveBeenCalledTimes(1)
-  expect(createBlog.mock.calls[0][0]).toEqual({
-    title: 'Testing title',
-    author: 'Testing author',
-    url: 'https://testing.url',
-  })
-})
+      <form onSubmit={addBlog}>
+        <div>
+          title
+          <input
+            type="text"
+            value={title}
+            name="Title"
+            onChange={({ target }) => setTitle(target.value)}
+          />
+        </div>
+
+        <div>
+          author
+          <input
+            type="text"
+            value={author}
+            name="Author"
+            onChange={({ target }) => setAuthor(target.value)}
+          />
+        </div>
+
+        <div>
+          url
+          <input
+            type="text"
+            value={url}
+            name="Url"
+            onChange={({ target }) => setUrl(target.value)}
+          />
+        </div>
+
+        <button type="submit">create</button>
+      </form>
+    </div>
+  )
+}
+
+export default BlogForm

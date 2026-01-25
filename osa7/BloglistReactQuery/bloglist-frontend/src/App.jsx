@@ -1,53 +1,85 @@
 import { useEffect, useRef, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Togglable from './components/Togglable'
-import BlogForm from './components/BlogForm'
+import { useNotification } from './contexts/NotificationContext'
+
+const notify = (dispatch, message, type = 'success', seconds = 5) => {
+  dispatch({ type: 'SHOW', payload: { message, type } })
+  setTimeout(() => dispatch({ type: 'CLEAR' }), seconds * 1000)
+}
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
-
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
+  const queryClient = useQueryClient()
+  const [, dispatch] = useNotification()
 
-  const [notification, setNotification] = useState(null)
-  const [notificationType, setNotificationType] = useState(null)
-
-  const showNotification = (message, type = 'success') => {
-    setNotification(message)
-    setNotificationType(type)
-
-    setTimeout(() => {
-      setNotification(null)
-      setNotificationType(null)
-    }, 5000)
-  }
-
-  const fetchBlogs = async () => {
-    try {
-      const blogsFromServer = await blogService.getAll()
-      setBlogs(blogsFromServer)
-    } catch (e) {
-      showNotification('failed to fetch blogs', 'error')
-    }
-  }
-
-  // Palautetaan kirjautunut käyttäjä localStoragesta ja haetaan blogit tokenin kanssa
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const savedUser = JSON.parse(loggedUserJSON)
-      setUser(savedUser)
-      blogService.setToken(savedUser.token)
-      fetchBlogs()
-    }
+    if (!loggedUserJSON) return
+
+    const savedUser = JSON.parse(loggedUserJSON)
+    setUser(savedUser)
+    blogService.setToken(savedUser.token)
   }, [])
+
+  const blogsQuery = useQuery({
+    queryKey: ['blogs'],
+    queryFn: blogService.getAll,
+    enabled: !!user,
+    retry: 1,
+  })
+
+  const createBlogMutation = useMutation({
+    mutationFn: blogService.create,
+    onSuccess: (createdBlog) => {
+      queryClient.setQueryData(['blogs'], (old) =>
+        old ? old.concat(createdBlog) : [createdBlog],
+      )
+
+      if (blogFormRef.current) {
+        blogFormRef.current.toggleVisibility()
+      }
+
+      notify(
+        dispatch,
+        `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
+        'success',
+      )
+    },
+    onError: () => notify(dispatch, 'failed to create blog', 'error'),
+  })
+
+  const likeBlogMutation = useMutation({
+    mutationFn: ({ id, updated }) => blogService.update(id, updated),
+    onSuccess: (updatedBlog) => {
+      queryClient.setQueryData(['blogs'], (old) =>
+        old.map((b) => (b.id === updatedBlog.id ? updatedBlog : b)),
+      )
+    },
+    onError: () => notify(dispatch, 'failed to like blog', 'error'),
+  })
+
+  const removeBlogMutation = useMutation({
+    mutationFn: (id) => blogService.remove(id),
+    onSuccess: (_, removedId) => {
+      queryClient.setQueryData(['blogs'], (old) =>
+        old.filter((b) => b.id !== removedId),
+      )
+      notify(dispatch, 'blog removed', 'success')
+    },
+    onError: () => notify(dispatch, 'failed to delete blog', 'error'),
+  })
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -65,10 +97,9 @@ const App = () => {
       setUsername('')
       setPassword('')
 
-      await fetchBlogs()
-      showNotification('logged in', 'success')
+      notify(dispatch, `welcome ${loggedInUser.name}`, 'success')
     } catch (error) {
-      showNotification('wrong username/password', 'error')
+      notify(dispatch, 'wrong username/password', 'error')
     }
   }
 
@@ -76,75 +107,15 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     blogService.setToken(null)
     setUser(null)
-    setBlogs([])
+    queryClient.removeQueries({ queryKey: ['blogs'] })
+    notify(dispatch, 'logged out', 'success')
   }
 
-  const addBlog = async (blogObject) => {
-    try {
-      const createdBlog = await blogService.create(blogObject)
-
-      if (blogFormRef.current) {
-        blogFormRef.current.toggleVisibility()
-      }
-
-      setBlogs((prev) => prev.concat(createdBlog))
-
-      showNotification(
-        `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
-        'success',
-      )
-    } catch (error) {
-      showNotification('failed to create blog', 'error')
-    }
-  }
-
-  const likeBlog = async (blog) => {
-    try {
-      const id = blog.id
-
-      // FSO backend yleensä odottaa, että user on id (string)
-      const updatedBlogData = {
-        title: blog.title,
-        author: blog.author,
-        url: blog.url,
-        likes: (Number(blog.likes) || 0) + 1,
-        user: typeof blog.user === 'object' ? blog.user.id : blog.user,
-      }
-
-      const updatedBlog = await blogService.update(id, updatedBlogData)
-
-      // Säilytetään user-objekti UI:ssa, jotta Blog-komponentti voi näyttää nimen
-      const updatedForUi = {
-        ...updatedBlog,
-        user: typeof blog.user === 'object' ? blog.user : updatedBlog.user,
-      }
-
-      setBlogs((prev) => prev.map((b) => (b.id === id ? updatedForUi : b)))
-      showNotification(`${blog.title} liked`, 'success')
-    } catch (error) {
-      showNotification('failed to like blog', 'error')
-    }
-  }
-
-  const deleteBlog = async (blog) => {
-    const ok = window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)
-    if (!ok) return
-
-    try {
-      await blogService.remove(blog.id)
-      setBlogs((prev) => prev.filter((b) => b.id !== blog.id))
-      showNotification(`deleted ${blog.title}`, 'success')
-    } catch (error) {
-      showNotification('failed to delete blog', 'error')
-    }
-  }
-
-  if (user === null) {
+  if (!user) {
     return (
       <div>
         <h2>Log in to application</h2>
-
-        <Notification message={notification} type={notificationType} />
+        <Notification />
 
         <form onSubmit={handleLogin}>
           <div>
@@ -173,24 +144,25 @@ const App = () => {
     )
   }
 
-  const sortedBlogs = [...blogs].sort((a, b) => {
-    const likesA = Number(a.likes) || 0
-    const likesB = Number(b.likes) || 0
-    return likesB - likesA
-  })
+  if (blogsQuery.isLoading) return <div>loading...</div>
+  if (blogsQuery.isError) return <div>blog service not available</div>
+
+  const blogs = Array.isArray(blogsQuery.data) ? blogsQuery.data : []
+
+  const sortedBlogs = [...blogs].sort((a, b) => (b.likes || 0) - (a.likes || 0))
 
   return (
     <div>
       <h2>blogs</h2>
 
-      <Notification message={notification} type={notificationType} />
+      <Notification />
 
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
 
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} />
+        <BlogForm createBlog={(blog) => createBlogMutation.mutate(blog)} />
       </Togglable>
 
       {sortedBlogs.map((blog) => (
@@ -198,8 +170,23 @@ const App = () => {
           key={blog.id}
           blog={blog}
           user={user}
-          handleLike={() => likeBlog(blog)}
-          handleDelete={() => deleteBlog(blog)}
+          handleLike={() =>
+            likeBlogMutation.mutate({
+              id: blog.id,
+              updated: {
+                ...blog,
+                likes: (Number(blog.likes) || 0) + 1,
+                user: typeof blog.user === 'object' ? blog.user.id : blog.user,
+              },
+            })
+          }
+          handleDelete={() => {
+            if (
+              window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)
+            ) {
+              removeBlogMutation.mutate(blog.id)
+            }
+          }}
         />
       ))}
     </div>

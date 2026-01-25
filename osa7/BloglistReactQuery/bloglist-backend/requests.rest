@@ -1,0 +1,52 @@
+### Get all blogs
+GET http://localhost:3003/api/blogs
+
+
+### Add a new blog
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Eka blogi",
+  "author": "Maria",
+  "url": "https://example.com",
+  "likes": 3
+}
+
+### Get all users
+GET http://localhost:3003/api/users
+
+### Create user
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "root",
+  "name": "Root User",
+  "password": "salasana"
+}
+
+### Login
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "salasana"
+}
+
+### Add a new blog with token
+POST http://localhost:3003/api/blogs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY5NjI1MGRjMjljZGIzOTM4ZTIxODMxYiIsImlhdCI6MTc2ODA1MDkxOX0.7T6EcmtIL9VRy486oHBsz3h8vi2oPhjd4Po5_oLQPH4
+Content-Type: application/json
+
+{
+  "title": "Toka blogi",
+  "author": "Root",
+  "url": "https://example.com",
+  "likes": 1
+}
+
+### Delete a blog
+DELETE http://localhost:3003/api/blogs/69625f9fa4bc3f93647fa0cf
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY5NjI1MGRjMjljZGIzOTM4ZTIxODMxYiIsImlhdCI6MTc2ODA1MDkxOX0.7T6EcmtIL9VRy486oHBsz3h8vi2oPhjd4Po5_oLQPH4
