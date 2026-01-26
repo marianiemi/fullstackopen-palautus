@@ -14,6 +14,14 @@
 - Kirjailijan syntymävuoden päivitys (select-valinta)
 - Välimuistin päivitys mutaatioiden jälkeen
 
+### 8.13-8.16
+
+- Backend refaktorointi ja MongoDB
+- Kirjat, kirjailijat ja käyttäjät tietokannassa
+- GraphQL-validointivirheet (GraphQLError)
+- Käyttäjien kirjautuminen JWT-tokenilla
+- Suojatut mutaatiot ja `me`-query
+
 ## Käynnistys
 
 ### Backend
@@ -28,3 +36,4 @@ http://localhost:4000/
 
 npm install
 npm run dev
+http://localhost:5173
