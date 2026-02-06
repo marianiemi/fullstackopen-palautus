@@ -36,5 +36,10 @@ osa7
   ├─ Query blogilista
   └─ Countries
 
+osa8
+  ├─ library backend
+  └─ library frontend
+
+
 ```
 
