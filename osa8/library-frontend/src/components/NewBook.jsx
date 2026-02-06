@@ -11,7 +11,7 @@ const NewBook = ({ show }) => {
 
   const [createBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
-    // odotetaan että refetch on valmis ennen kuin tyhjennetään formi (siistimpi käytös)
+
     awaitRefetchQueries: true,
     onError: (error) => {
       console.log(error);
@@ -47,7 +47,7 @@ const NewBook = ({ show }) => {
 
   return (
     <div>
-      <h2>add book</h2>
+      <h2>Add book</h2>
 
       <form onSubmit={submit}>
         <div>
@@ -85,7 +85,7 @@ const NewBook = ({ show }) => {
 
         <div>genres: {genres.join(" ")}</div>
 
-        <button type="submit">create book</button>
+        <button type="submit">Create book</button>
       </form>
     </div>
   );

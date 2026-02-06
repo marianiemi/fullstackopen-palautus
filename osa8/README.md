@@ -22,6 +22,14 @@
 - Käyttäjien kirjautuminen JWT-tokenilla
 - Suojatut mutaatiot ja `me`-query
 
+### 8.17-8.20
+
+- Frontend yhteensopivaksi uuden backendin kanssa
+- Kirjautuminen frontendissä ja token headerissa
+- Kirjojen ja kirjailijoiden muokkaus kirjautuneena
+- Kirjojen suodatus genren perusteella
+- Suositusnäkymä käyttäjän lempigenren mukaan
+
 ## Käynnistys
 
 ### Backend
