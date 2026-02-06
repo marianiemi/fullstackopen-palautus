@@ -33,7 +33,7 @@ const Books = ({ show }) => {
 
   return (
     <div>
-      <h2>books</h2>
+      <h2>Books</h2>
 
       {genre ? (
         <div>
@@ -47,8 +47,8 @@ const Books = ({ show }) => {
         <thead>
           <tr>
             <th></th>
-            <th>author</th>
-            <th>published</th>
+            <th>Author</th>
+            <th>Published</th>
           </tr>
         </thead>
         <tbody>

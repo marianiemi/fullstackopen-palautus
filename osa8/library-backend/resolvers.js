@@ -5,8 +5,10 @@ const User = require("./models/user");
 const jwt = require("jsonwebtoken");
 const { GraphQLError } = require("graphql");
 
+const { PubSub } = require("graphql-subscriptions");
+const pubsub = new PubSub();
+
 const handleMongooseError = (error, invalidArgs) => {
-  // Mongoose validation errors
   if (error.name === "ValidationError") {
     throw new GraphQLError(error.message, {
       extensions: {
@@ -17,7 +19,6 @@ const handleMongooseError = (error, invalidArgs) => {
     });
   }
 
-  // Duplicate key (unique index) errors
   if (error.name === "MongoServerError" && error.code === 11000) {
     const fields = Object.keys(error.keyValue || {});
     const field = fields[0] || "field";
@@ -35,7 +36,6 @@ const handleMongooseError = (error, invalidArgs) => {
     );
   }
 
-  // Fallback
   throw new GraphQLError("Saving failed", {
     extensions: {
       code: "BAD_USER_INPUT",
@@ -62,7 +62,6 @@ const resolvers = {
       const filter = {};
 
       if (args.genre) {
-        // array contains
         filter.genres = { $in: [args.genre] };
       }
 
@@ -112,7 +111,11 @@ const resolvers = {
         handleMongooseError(error, args.title);
       }
 
-      return Book.findById(book._id).populate("author");
+      const populatedBook = await Book.findById(book._id).populate("author");
+
+      pubsub.publish("BOOK_ADDED", { bookAdded: populatedBook });
+
+      return populatedBook;
     },
 
     editAuthor: async (root, args, context) => {
@@ -152,9 +155,7 @@ const resolvers = {
 
       if (!user || args.password !== "secret") {
         throw new GraphQLError("wrong credentials", {
-          extensions: {
-            code: "BAD_USER_INPUT",
-          },
+          extensions: { code: "BAD_USER_INPUT" },
         });
       }
 
@@ -164,6 +165,12 @@ const resolvers = {
       };
 
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
+    },
+  },
+
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterableIterator("BOOK_ADDED"),
     },
   },
 };

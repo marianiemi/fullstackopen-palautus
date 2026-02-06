@@ -30,6 +30,13 @@
 - Kirjojen suodatus genren perusteella
 - Suositusnäkymä käyttäjän lempigenren mukaan
 
+### 8.23-8.25
+
+- Subscriptiot backendissä (bookAdded)
+- Subscriptioiden käyttöönotto frontendissä WebSocket-yhteydellä
+- Ilmoitus uusista kirjoista reaaliajassa
+- Kirjalistan pitäminen ajantasaisena ilman sivun uudelleenlatausta
+
 ## Käynnistys
 
 ### Backend
