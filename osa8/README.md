@@ -48,7 +48,8 @@ http://localhost:4000/
 ```
 
 ### Frontend
-
+```
 npm install
 npm run dev
 http://localhost:5173
+```
