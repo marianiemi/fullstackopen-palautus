@@ -31,6 +31,20 @@ npm run calculateExercises – exercises komentoriviltä
 - Express-backend
 - Ping-endpoint frontendin testausta varten
 
+### 9.10-9.11
+
+- Lisätty data data/diagnoses.ts ja data/patients.ts
+- GET /api/diagnoses (Diagnosis-tyyppi, latin?)
+- GET /api/patients palauttaa potilaat ilman ssn-kenttää (Omit<Patient, "ssn">)
+- Rakenne materiaalin mukaisesti: src/types, src/services, src/routes
+
+### 9.12-9.13
+
+- POST /api/patients potilaan lisäämistä varten
+- Potilaille generoidaan uuid-pohjainen string-id backendissä
+- Request body -parsinta ja validointi (unknown, type narrowing, type guardit)
+- Gender refaktoroitu enum-tyypiksi
+
 ## Käynnistys Patientor
 
 ```bash
