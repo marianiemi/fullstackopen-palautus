@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts",
-    "lint": "eslint .",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -15,7 +16,8 @@
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
