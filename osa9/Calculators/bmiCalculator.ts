@@ -32,7 +32,6 @@ const parseBmiArguments = (args: string[]): BmiValues => {
   };
 };
 
-// Run as CLI only when this file is the entry point
 if (require.main === module) {
   try {
     const { height, weight } = parseBmiArguments(process.argv);
