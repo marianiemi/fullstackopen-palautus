@@ -1,5 +1,7 @@
 # Osa 9 Typescript
 
+## Calculator
+
 ### 9.1-9.7 Calculators
 
 - BMI-laskuri (CLI + HTTP)
@@ -24,6 +26,8 @@ npm run calculateExercises – exercises komentoriviltä
 
 ```
 
+## Patientor
+
 ### 9.8.-9.9 Patientor backend
 
 - TypeScript-projekti (tsc)
@@ -47,7 +51,7 @@ npm run calculateExercises – exercises komentoriviltä
 
 ### 9.14
 
--POST /api/patients -request body validoidaan Zodilla
+- POST /api/patients -request body validoidaan Zodilla
 
 - Manuaalinen validointi korvattu schema + .parse() -ratkaisulla
 - .strict() estää ylimääräiset kentät
@@ -65,3 +69,19 @@ Backend käynnistyy oletuksena porttiin 3001.
 npm run build
 npm start
 ```
+
+## Half-stack
+
+### 9.15
+
+- Luotu Vite React + TypeScript -sovellus
+- Jaettu App kolmeen komponenttiin (Header, Content, Total)
+- Props-tyypitys TypeScriptilla
+
+### 9.16
+
+- Määritelty CoursePart discriminated union (kind)
+- Poistettu duplikaatio base-rajapinnan avulla
+- Renderöinti switch + type narrowing
+- Exhaustive check assertNever
+- Lisätty uusi special-tyyppi
