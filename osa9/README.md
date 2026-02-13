@@ -45,6 +45,14 @@ npm run calculateExercises – exercises komentoriviltä
 - Request body -parsinta ja validointi (unknown, type narrowing, type guardit)
 - Gender refaktoroitu enum-tyypiksi
 
+### 9.14
+
+-POST /api/patients -request body validoidaan Zodilla
+
+- Manuaalinen validointi korvattu schema + .parse() -ratkaisulla
+- .strict() estää ylimääräiset kentät
+- Virheissä palautetaan 400 + Zod issues
+
 ## Käynnistys Patientor
 
 ```bash

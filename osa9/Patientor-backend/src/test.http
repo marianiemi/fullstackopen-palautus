@@ -1,0 +1,36 @@
+### Onnistuva POST
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "Test Person",
+  "dateOfBirth": "1990-01-01",
+  "ssn": "010190-123A",
+  "gender": "female",
+  "occupation": "Developer"
+}
+
+### Virhe: dateOfBirth väärässä muodossa -> 400 + issues
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "Bad Date",
+  "dateOfBirth": "01-01-1990",
+  "ssn": "010190-123A",
+  "gender": "female",
+  "occupation": "Developer"
+}
+
+### Virhe: ylimääräinen kenttä (strict) -> 400 + issues
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "Extra Field",
+  "dateOfBirth": "1990-01-01",
+  "ssn": "010190-123A",
+  "gender": "female",
+  "occupation": "Developer",
+  "extra": "nope"
+}
