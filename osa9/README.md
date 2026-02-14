@@ -65,3 +65,10 @@
     - Diaryt renderöity listana
     - CORS käyttöön backendissä
     - TypeScript + ESLint kunnossa
+
+### 9.18
+
+    - Lomake uusien diary-entryjen lisäämiseen
+    - Axios POST /api/diaries
+    - State päivittyy onnistuneen lisäyksen jälkeen
+    - TypeScript-tyypitys myös create-operaatiossa
