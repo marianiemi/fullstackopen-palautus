@@ -78,3 +78,10 @@
     - Backendin virhesyy näytetään UI:ssa (AxiosError narrowing)
     - 400-virhe käsitellään ja response.data renderöidään
     - Virheilmoitus esitetään käyttäjälle punaisena
+
+### 9.20
+
+    - Date → HTML type="date"
+    - Weather & visibility → radio buttons
+    - Union-tyypit (Weather, Visibility)
+    - Type-safe lomake

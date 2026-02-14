@@ -1,15 +1,30 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import type { NonSensitiveDiaryEntry, NewDiaryEntry } from "./types";
 import diaryService from "./services/diaryService";
+import type {
+  DiaryEntry,
+  NewDiaryEntry,
+  NonSensitiveDiaryEntry,
+  Visibility,
+  Weather,
+} from "./types";
+
+const visibilityOptions: Visibility[] = ["great", "good", "ok", "poor"];
+const weatherOptions: Weather[] = [
+  "sunny",
+  "rainy",
+  "cloudy",
+  "stormy",
+  "windy",
+];
 
 const App = () => {
   const [diaries, setDiaries] = useState<NonSensitiveDiaryEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const [date, setDate] = useState("");
-  const [weather, setWeather] = useState("");
-  const [visibility, setVisibility] = useState("");
+  const [visibility, setVisibility] = useState<Visibility>("good");
+  const [weather, setWeather] = useState<Weather>("sunny");
   const [comment, setComment] = useState("");
 
   useEffect(() => {
@@ -21,6 +36,7 @@ const App = () => {
         setError("Failed to fetch diaries");
       }
     };
+
     fetchDiaries();
   }, []);
 
@@ -34,27 +50,26 @@ const App = () => {
 
     const newEntry: NewDiaryEntry = {
       date,
-      weather,
       visibility,
+      weather,
       comment,
     };
 
     try {
-      const added = await diaryService.create(newEntry);
+      const added: DiaryEntry = await diaryService.create(newEntry);
 
-      // Päivitä listaan non-sensitive (id/date/weather/visibility)
       const nonSensitiveAdded: NonSensitiveDiaryEntry = {
-        id: (added as any).id,
-        date: (added as any).date,
-        weather: (added as any).weather,
-        visibility: (added as any).visibility,
+        id: added.id,
+        date: added.date,
+        visibility: added.visibility,
+        weather: added.weather,
       };
 
       setDiaries(diaries.concat(nonSensitiveAdded));
 
       setDate("");
-      setWeather("");
-      setVisibility("");
+      setVisibility("good");
+      setWeather("sunny");
       setComment("");
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
@@ -88,15 +103,34 @@ const App = () => {
 
         <div>
           visibility{" "}
-          <input
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value)}
-          />
+          {visibilityOptions.map((v) => (
+            <label key={v} style={{ marginRight: 8 }}>
+              <input
+                type="radio"
+                name="visibility"
+                value={v}
+                checked={visibility === v}
+                onChange={() => setVisibility(v)}
+              />
+              {v}
+            </label>
+          ))}
         </div>
 
         <div>
           weather{" "}
-          <input value={weather} onChange={(e) => setWeather(e.target.value)} />
+          {weatherOptions.map((w) => (
+            <label key={w} style={{ marginRight: 8 }}>
+              <input
+                type="radio"
+                name="weather"
+                value={w}
+                checked={weather === w}
+                onChange={() => setWeather(w)}
+              />
+              {w}
+            </label>
+          ))}
         </div>
 
         <div>
