@@ -72,3 +72,9 @@
     - Axios POST /api/diaries
     - State päivittyy onnistuneen lisäyksen jälkeen
     - TypeScript-tyypitys myös create-operaatiossa
+
+### 9.19
+
+    - Backendin virhesyy näytetään UI:ssa (AxiosError narrowing)
+    - 400-virhe käsitellään ja response.data renderöidään
+    - Virheilmoitus esitetään käyttäjälle punaisena
