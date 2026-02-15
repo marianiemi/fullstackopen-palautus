@@ -40,6 +40,19 @@ osa8
   ├─ library backend
   └─ library frontend
 
+osa9
+  ├─ Calculators
+  ├─ flight-diary
+  ├─ half-stack
+  ├─ Patientor-backend
+  └─ Patientor-frontend
+
+
+Tämä repository sisältää useita Full Stack Open -kurssin osioita.
+Valmistelut: npm install
+Typescript: npm run build
+Käynnistys: npm run dev
+Koodin tarkistamisessa ja siistimisessä on hyödynnetty tekoälyä (VSCode Github Copilot).
 
 ```
 
