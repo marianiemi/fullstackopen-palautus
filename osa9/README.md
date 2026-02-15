@@ -40,6 +40,15 @@
     - .strict() estää ylimääräiset kentät
     - Virheissä palautetaan 400 + Zod issues
 
+### 9.21-9.24
+
+    - GET /api/patients/:id lisätty (palauttaa täydet potilastiedot + entries)
+    - Entry-tyyppi laajennettu union-tyypiksi (Hospital, OccupationalHealthcare, HealthCheck)
+    - Seed-data päivitetty sisältämään oikeita entry-olioita
+    - Frontendiin lisätty potilaan detaljisivu (/patients/:id)
+    - Potilaan nimi klikattavaksi linkiksi (React Router)
+    - Entryt listataan potilassivulla (date, description, diagnosisCodes)
+
 ## HALF-STACK
 
 ### 9.15

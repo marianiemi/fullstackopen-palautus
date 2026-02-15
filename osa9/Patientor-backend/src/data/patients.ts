@@ -1,4 +1,48 @@
-import { Patient, Gender } from "../types";
+import { Patient, Gender, HealthCheckRating, Entry } from "../types";
+
+const johnEntries: Entry[] = [
+  {
+    id: "d811e46d-70b3-4d90-b090-4535c7cf8fb1",
+    date: "2015-01-02",
+    type: "Hospital",
+    specialist: "MD House",
+    diagnosisCodes: ["S62.5"],
+    description:
+      "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
+    discharge: {
+      date: "2015-01-16",
+      criteria: "Thumb has healed.",
+    },
+  },
+];
+
+const martinEntries: Entry[] = [
+  {
+    id: "fcd59fa6-c4b4-4fec-ac4d-df4fe1f85f62",
+    date: "2019-08-05",
+    type: "OccupationalHealthcare",
+    specialist: "MD House",
+    employerName: "HyPD",
+    diagnosisCodes: ["Z57.1", "Z74.3", "M51.2"],
+    description:
+      "Patient eated a mushroom. Poisoning symptoms started 2 hours after.",
+    sickLeave: {
+      startDate: "2019-08-05",
+      endDate: "2019-08-28",
+    },
+  },
+];
+
+const danaEntries: Entry[] = [
+  {
+    id: "6fbe1d22-9e7a-4c0a-8e16-6f8ef7f90123",
+    date: "2020-10-10",
+    type: "HealthCheck",
+    specialist: "MD House",
+    description: "Yearly control visit. Everything looks good.",
+    healthCheckRating: HealthCheckRating.LowRisk,
+  },
+];
 
 const data: Patient[] = [
   {
@@ -8,7 +52,7 @@ const data: Patient[] = [
     ssn: "090786-122X",
     gender: Gender.Male,
     occupation: "New york city cop",
-    entries: [],
+    entries: johnEntries,
   },
   {
     id: "d2773598-f723-11e9-8f0b-362b9e155667",
@@ -17,7 +61,7 @@ const data: Patient[] = [
     ssn: "300179-77A",
     gender: Gender.Male,
     occupation: "Cop",
-    entries: [],
+    entries: martinEntries,
   },
   {
     id: "d27736ec-f723-11e9-8f0b-362b9e155667",
@@ -35,7 +79,7 @@ const data: Patient[] = [
     ssn: "050174-432N",
     gender: Gender.Female,
     occupation: "Forensic Pathologist",
-    entries: [],
+    entries: danaEntries,
   },
   {
     id: "d2773c6e-f723-11e9-8f0b-362b9e155667",
