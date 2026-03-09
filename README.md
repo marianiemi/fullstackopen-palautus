@@ -52,7 +52,8 @@ Tämä repository sisältää useita Full Stack Open -kurssin osioita.
 Valmistelut: npm install
 Typescript: npm run build
 Käynnistys: npm run dev
-Koodin tarkistamisessa ja siistimisessä on hyödynnetty tekoälyä (VSCode Github Copilot).
+
+Tämän harjoitustyön tekemisen tukena on käytetty tekoälytyökaluja (ChatGPT, Copilot). Tekoälyä on hyödynnetty erityisesti virhetilanteiden ja ongelmien selvittämisessä sekä rakenteiden tarkistamisessa ja koodin siistimisessä.
 
 ```
 
